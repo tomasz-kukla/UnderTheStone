@@ -1,19 +1,12 @@
+from django.db.models import query
 from django.shortcuts import render
-from django.http import HttpResponse
-# Create your views here.
+from rest_framework import generics
+from .serializers import ReservationSerializer
+from .models import Reservation
+
+# create all tables view
 
 
-def main(request):
-    return HttpResponse("<h1>Hello MAIN Page</h1>")
-
-
-def about(request):
-    return HttpResponse("<h1>Hello ABOUT Page</h1>")
-
-
-def menu(request):
-    return HttpResponse("<h1>Hello MENU Page</h1>")
-
-
-def booking(request):
-    return HttpResponse("<h1>Hello BOOKING Page</h1>")
+class ReservationView(generics.ListAPIView):
+    queryset = Reservation.objects.all()
+    serializer_class = ReservationSerializer
