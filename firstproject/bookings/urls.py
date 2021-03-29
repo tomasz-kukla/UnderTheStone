@@ -1,10 +1,13 @@
 
 from django.urls import path
-from .views import ReservationView
+from django.contrib import admin
+from rest_framework import views
+from .views import ReservationViewSet
 
 
 urlpatterns = [
-    path('booking', ReservationView.as_view())
+    path('admin/', admin.site.urls),
+    path('reservation/', ReservationViewSet),
 
 
 ]
