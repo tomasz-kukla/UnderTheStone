@@ -8,7 +8,7 @@ class SectionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Section
-        fields = ('id', 'name', 'ground_level', 'allowed_smoking')
+        fields = '__all__'
 
 
 class ReservationSerializer(serializers.ModelSerializer):
@@ -23,4 +23,4 @@ class TableSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Table
-        fields = ('id', 'number_of_seats', 'code')
+        fields = '__all__'

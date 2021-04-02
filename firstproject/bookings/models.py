@@ -16,17 +16,24 @@ def generate_reservation_code():
 
 
 class Table(models.Model):
+
     number_of_seats = models.IntegerField(default=1)
     code = models.CharField(
         max_length=3, default='', unique=True)
 
+    def __str__(self) -> str:
+        return f'{self.code}'
+
 
 class Section(models.Model):
     table = models.ForeignKey(
-        Table, related_name='sections', on_delete=CASCADE)
+        Table, related_name='tables', on_delete=CASCADE)
     name = models.CharField(max_length=20, default='---', unique=True)
     ground_level = models.IntegerField(default=0)
     allowed_smoking = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return f'{self.name}'
 
 
 class Reservation(models.Model):
@@ -38,7 +45,8 @@ class Reservation(models.Model):
         ('Other', 'Other'),
     )
 
-    table = models.ForeignKey(Table, related_name='reservations', on_delete=PROTECT)
+    table = models.ForeignKey(
+        Table, related_name='reservations', on_delete=PROTECT)
 
     reservation_date = models.DateField(auto_now=False, auto_now_add=False)
     reservation_start = models.TimeField(
@@ -55,3 +63,6 @@ class Reservation(models.Model):
     customer_email = models.EmailField(max_length=254)
 
     special_annotation = models.CharField(max_length=254, default='')
+
+    def __str__(self) -> str:
+        return f'{self.reservation_date}'

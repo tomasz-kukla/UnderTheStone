@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Reservation, Table, Section
+
+admin.site.register(Reservation)
+admin.site.register(Table)
+admin.site.register(Section)
