@@ -15,26 +15,22 @@ def generate_reservation_code():
     return code
 
 
-class Table(models.Model):
-
-    number_of_seats = models.IntegerField(default=1)
-    code = models.CharField(
-        max_length=3, default='', unique=True)
-
-    def __str__(self) -> str:
-        return f'{self.code}'
-
-
 class Section(models.Model):
-    table = models.ForeignKey(
-        Table, related_name='tables', on_delete=CASCADE)
-    name = models.CharField(max_length=20, default='---', unique=True)
-    ground_level = models.IntegerField(default=0)
-    allowed_smoking = models.BooleanField(default=False)
+    name = models.CharField(max_length=20, unique=True)
+    floor = models.IntegerField(default=0)
+    smoking_allowed = models.BooleanField(default=False)
 
     def __str__(self) -> str:
-        return f'{self.name}'
+        return f'Section {self.name}'
 
+
+class Table(models.Model):
+    section = models.ForeignKey(Section, related_name='tables', on_delete=models.CASCADE)
+    number_of_seats = models.IntegerField(default=1)
+    code = models.CharField(max_length=3, unique=True)
+
+    def __str__(self) -> str:
+        return f'Table {self.code} - {self.number_of_seats} seats'
 
 class Reservation(models.Model):
 
