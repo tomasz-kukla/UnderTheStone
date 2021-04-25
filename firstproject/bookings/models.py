@@ -6,6 +6,8 @@ from django.db.models.fields import AutoField, TextField
 
 from django.db import models
 
+from .validators import validate_start, validate_end
+
 
 def generate_reservation_code():
     lenght = 7
@@ -56,7 +58,22 @@ class Reservation(models.Model):
     customer_email = models.EmailField(max_length=254)
 
     category = models.CharField(blank=True, max_length=15, choices=RESERVATION_CATEGORY)
-    annotation = models.TextField(blank=True, max_length=254, default='')
+    annotation = models.TextField(blank=True, max_length=254)
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        return super(Reservation, self).save(*args, **kwargs)
+
+    def clean(self):
+        validate_start(self.start)
+        validate_end(self.start, self.end)
+
+    class Meta:
+        unique_together = [
+            ('start', 'end', 'table'),
+            ('start', 'table'),
+            ('end', 'table'),
+        ]
 
     def __str__(self) -> str:
         return f'{self.start} {self.name}'
