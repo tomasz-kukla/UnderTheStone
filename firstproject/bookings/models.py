@@ -14,7 +14,7 @@ def generate_reservation_code():
 
     while True:
         code = ''.join(random.choices(string.ascii_uppercase, k=lenght))
-        if Reservation.objects.filter(reservation_code=code).count() == 0:
+        if Reservation.objects.filter(code=code).count() == 0:
             break
     return code
 
@@ -51,11 +51,11 @@ class Reservation(models.Model):
 
     start = models.DateTimeField()
     end = models.DateTimeField()
-    reservation_code = models.CharField(max_length=9, default=generate_reservation_code, unique=True)
+    code = models.CharField(max_length=9, default=generate_reservation_code, unique=True)
 
     firstname = models.CharField(max_length=40)
     lastname = models.CharField(max_length=40)
-    customer_email = models.EmailField(max_length=254)
+    email = models.EmailField(max_length=254)
 
     category = models.CharField(blank=True, max_length=15, choices=RESERVATION_CATEGORY)
     annotation = models.TextField(blank=True, max_length=254)
