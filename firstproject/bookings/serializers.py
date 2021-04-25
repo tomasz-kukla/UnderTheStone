@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.fields import ReadOnlyField
+
 from .models import Section, Table, Reservation
-# it will convert the class objects into .json datatypes
 
 
 class SectionSerializer(serializers.ModelSerializer):

@@ -17,22 +17,22 @@ def generate_reservation_code():
     return code
 
 
-class Table(models.Model):
-    number_of_seats = models.IntegerField(default=1)
-    code = models.CharField(max_length=3, unique=True)
-
-    def __str__(self) -> str:
-        return f'Table {self.code} - {self.number_of_seats} seats'
-
-
 class Section(models.Model):
-    table = models.ForeignKey(Table, related_name='tables', on_delete=models.CASCADE)
     name = models.CharField(max_length=20, unique=True)
     floor = models.IntegerField(default=0)
     smoking_allowed = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return f'Section {self.name}'
+
+
+class Table(models.Model):
+    section = models.ForeignKey(Section, related_name='sections', on_delete=models.CASCADE)
+    number_of_seats = models.IntegerField(default=1)
+    code = models.CharField(max_length=3, unique=True)
+
+    def __str__(self) -> str:
+        return f'Table {self.code} - {self.number_of_seats} seats'
 
 
 class Reservation(models.Model):
@@ -51,15 +51,15 @@ class Reservation(models.Model):
     end = models.DateTimeField()
     reservation_code = models.CharField(max_length=9, default=generate_reservation_code, unique=True)
 
-    firstname = models.TextField(max_length=40)
-    lastname = models.TextField(max_length=40)
+    firstname = models.CharField(max_length=40)
+    lastname = models.CharField(max_length=40)
     customer_email = models.EmailField(max_length=254)
 
     category = models.CharField(blank=True, max_length=15, choices=RESERVATION_CATEGORY)
-    annotation = models.CharField(blank=True, max_length=254, default='')
+    annotation = models.TextField(blank=True, max_length=254, default='')
 
     def __str__(self) -> str:
-        return f'{self.reservation_date} {self.name}'
+        return f'{self.start} {self.name}'
 
     @property
     def name(self):
